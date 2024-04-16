@@ -514,7 +514,7 @@
 
     showPicker() {
       var filePicker = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-      filePicker.init(window, this.getAttribute("title"),
+      filePicker.init(window.browsingContext, this.getAttribute("title"),
         this.type == "file" ? Ci.nsIFilePicker.modeOpen : Ci.nsIFilePicker.modeGetFolder);
       if (this.value) {
         try {
