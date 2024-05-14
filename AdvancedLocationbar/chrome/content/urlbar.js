@@ -602,7 +602,7 @@
           gURLBar.querySelector('advancedlocationbar').getAttribute("linkify") == "true") {
           if ("TreeStyleTabService" in window)
             TreeStyleTabService.readyToOpenChildTab(gBrowser.selectedTab);
-          openTrustedLinkIn(this.href, whereToOpenLink(event, false, true), { relatedToCurrent: true });
+          openTrustedLinkIn(this.href, BrowserUtils.whereToOpenLink(event, false, true), { relatedToCurrent: true });
           if ("TreeStyleTabService" in window) // We should reset, if was opened not tab
             TreeStyleTabService.stopToOpenChildTab(gBrowser.selectedTab);
           event.stopPropagation();
