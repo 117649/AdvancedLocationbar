@@ -1,4 +1,4 @@
-ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs");
+const { AddonManager } = ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs");
 
 var Globals = {};
 
@@ -113,13 +113,12 @@ function startup(data, reason) {
     Services.obs.addObserver(documentObserver, "chrome-document-loaded");
   })();
 
-  (async function () {
-    try {
-      Services.prefs.getBoolPref("extensions.advancedlocationbar.hide_warning") ?
-        (await AddonManager.getAddonByID(`${data.id}`)).__AddonInternal__.signedState = AddonManager.SIGNEDSTATE_NOT_REQUIRED
-        : (await AddonManager.getAddonByID(`${data.id}`)).__AddonInternal__.signedState === AddonManager.SIGNEDSTATE_NOT_REQUIRED ? (await AddonManager.getAddonByID(`${data.id}`)).__AddonInternal__.signedState = AddonManager.SIGNEDSTATE_MISSING : '';
-    } catch (error) { }
-  })();
+  AddonManager.getAddonByID(data.id).then(addon => {
+    Services.prefs.getBoolPref("extensions.advancedlocationbar.hide_warning") ?
+      addon.__AddonInternal__.signedState = AddonManager.SIGNEDSTATE_NOT_REQUIRED
+      : addon.__AddonInternal__.signedState = AddonManager.SIGNEDSTATE_MISSING;
+    }
+  );
 }
 
 function shutdown(data, reason) {
